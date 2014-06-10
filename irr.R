@@ -1,0 +1,38 @@
+temp<-function(val,rate,exp)
+{
+    val/((1+rate)^exp)
+}
+npv<-function(vec,rate)
+{
+    value=0
+    for(i in 1:length(vec))
+    {
+        value=value+temp(vec[i],rate,i-1)
+    }
+    value
+}
+
+irr<-function(vec)
+{
+    start=-1
+    end=1
+    rate=mean(c(start,end))
+	while(abs(npv(vec,rate)-0)>1e-10)
+	{
+		if(npv(vec,rate)>0)
+		{
+	            start=rate
+                    rate=mean(c(start,end)) 
+		}
+		else
+		{
+                    end=rate
+                    rate=mean(c(start,end))
+		}
+	}
+    rate
+}
+month_to_year<-function(rate)
+{
+   (1+rate)^12-1
+}

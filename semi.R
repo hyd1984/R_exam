@@ -1,0 +1,34 @@
+#semi variable
+a=rnorm(1000,1.03,0.9)
+b=rnorm(1000,1.03,0.9)
+w1=c(0:100)/100
+w2=c(100:0)/100
+downside<-function(vec)
+{
+result=vec
+for( i in 1:length(result))
+{
+result[i]=min(0,result[i]-mean(result))
+}
+result
+}
+scov<-function(a,b)
+{
+val=1/(length(a)-1)
+val*sum(downside(a)*downside(b))
+}
+exp_return<-function(w1,a,w2,b)
+{
+w1*mean(a)+w2*mean(b)
+}
+varab<-function(w1,a,w2,b)
+{
+w1^2*cov(a,a)+w2^2*cov(b,b)+2*w1*w2*cov(a,b)
+}
+svarab<-function(w1,a,w2,b)
+{
+w1^2*scov(a,a)+w2^2*scov(b,b)+2*w1*w2*scov(a,b)
+}
+meanab=exp_return(w1,a,w2,b)
+varab=varab(w1,a,w2,b)
+svarab=svarab(w1,a,w2,b)
